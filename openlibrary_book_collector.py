@@ -1,14 +1,14 @@
 import requests
 import csv
 
-library_url ="https://openlibrary.org/search.json?q=python&limit=58"
+library_url = "https://openlibrary.org/search.json?q=python&limit=58"
 response_situation = requests.get(library_url)
-
 print("status: " + str(response_situation.status_code))
+
 data = response_situation.json()
 books_info = data['docs']
-
 books_over_2000 = [book for book in books_info if 'first_publish_year' in book and book['first_publish_year'] > 2000]
+
 # for result in books_over_2000:
 #     print(result)
 
@@ -25,9 +25,9 @@ for book in books_over_2000:
 # for book in requested_books:
 #     print(book["title"], book["language"], book["publish_year"], book["ebook_access"], book["author"])
 
-keys = ["title", "language", "publish_year", "ebook_access", "author"]
+with open("books_file.csv", "w", newline="") as csvfile:
+    csvfile.write(f"{"Title":<75} {"Language":<30} {"Publish Year":<15} {"Ebook Access":<25} {"Author"}\n")
+    csvfile.write("-"*180 +"\n")
 
-with open('books.csv', 'w', newline='') as csvfile:
-    writer = csv.DictWriter(csvfile, fieldnames=keys)
-    writer.writeheader()
-    writer.writerows(requested_books)
+    for book in requested_books:
+        csvfile.write(f"{book['title']:<75} {book['language']:<30} {book['publish_year']:<15} {str(book['ebook_access']):<25} {book['author']}\n")
