@@ -1,16 +1,28 @@
+"""
+Fetching books from openlibrary,
+with after 2000 publish year,
+by saving them into a csv file.
+"""
+
 import requests
-import csv
 
-library_url = "https://openlibrary.org/search.json?q=python&limit=58"
-response_situation = requests.get(library_url)
-print("status: " + str(response_situation.status_code))
+LIBRARY_URL = "https://openlibrary.org/search.json?q=python&limit=58"
 
-data = response_situation.json()
+try:
+    response_situation = requests.get(LIBRARY_URL, timeout=5)
+    print("status: " + str(response_situation.status_code))
+    data = response_situation.json()
+except requests.exceptions.Timeout:
+    print("Not finding...")
+    data = {"docs":[]}
+except requests.exceptions.RequestException as e:
+    data = {"docs": []}
+    print(e)
+
 books_info = data['docs']
-books_over_2000 = [book for book in books_info if 'first_publish_year' in book and book['first_publish_year'] > 2000]
-
-# for result in books_over_2000:
-#     print(result)
+books_over_2000 = [book for book in books_info
+                   if 'first_publish_year' in book
+                   and book['first_publish_year'] > 2000]
 
 requested_books = []
 for book in books_over_2000:
@@ -22,12 +34,13 @@ for book in books_over_2000:
         "author": ",".join(book.get('author_name', [])),
     })
 
-# for book in requested_books:
-#     print(book["title"], book["language"], book["publish_year"], book["ebook_access"], book["author"])
-
-with open("books_file.csv", "w", newline="") as csvfile:
-    csvfile.write(f"{"Title":<75} {"Language":<30} {"Publish Year":<15} {"Ebook Access":<25} {"Author"}\n")
-    csvfile.write("-"*180 +"\n")
+with open("books_file.csv", "w", newline="" ,encoding="utf-8") as csvfile:
+    csvfile.write(f"{'Title':<75} {'Language':<30} "
+                  f"{'Publish Year':<15} {'Ebook Access':<25} {'Author'}\n")
+    csvfile.write("-" * 180 +"\n")
 
     for book in requested_books:
-        csvfile.write(f"{book['title']:<75} {book['language']:<30} {book['publish_year']:<15} {str(book['ebook_access']):<25} {book['author']}\n")
+        csvfile.write(f"{book['title']:<75}"
+                      f"{book['language']:<30} {book['publish_year']:<15}"
+                      f"{str(book['ebook_access']):<25} {book['author']}\n")
+    csvfile.close()
