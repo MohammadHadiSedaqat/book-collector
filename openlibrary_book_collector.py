@@ -35,12 +35,12 @@ for book in books_over_2000:
     })
 
 with open("books_file.csv", "w", newline="" ,encoding="utf-8") as csvfile:
-    csvfile.write(f"{'Title':<75} {'Language':<30} "
-                  f"{'Publish Year':<15} {'Ebook Access':<25} {'Author'}\n")
+    csvfile.write(f"{'Title':<75}{'Language':<30}"
+                  f"{'Publish Year':<15}{'Ebook Access':<25}{'Author'}\n")
     csvfile.write("-" * 180 +"\n")
 
     for book in requested_books:
         csvfile.write(f"{book['title']:<75}"
-                      f"{book['language']:<30} {book['publish_year']:<15}"
-                      f"{str(book['ebook_access']):<25} {book['author']}\n")
+                      f"{book['language']:<30}{book['publish_year']:<15}"
+                      f"{str(book['ebook_access']):<25}{book['author']}\n")
     csvfile.close()
