@@ -1,0 +1,254 @@
+body {
+    background: linear-gradient(270deg, #121212, #1a1a1a, #121212);
+    background-size: 600% 600%;
+    animation: gradientBG 20s ease infinite;
+    color: #eee;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+}
+
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: #fff;
+    text-shadow: 0 0 15px #ff6f91, 0 0 30px #764ba2;
+    animation: fadeInDown 1s ease forwards;
+}
+
+.search-container {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 30px;
+    position: relative;
+    animation: fadeInUp 1s ease forwards;
+}
+.search-container input {
+    flex: 1;
+    padding: 15px 20px;
+    border-radius: 50px 0 0 50px;
+    border: 2px solid #667eea;
+    font-size: 16px;
+    outline: none;
+    background: #1e1e1e;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(102,126,234,0.5);
+    transition: all 0.4s ease;
+}
+.search-container input:focus {
+    transform: scale(1.05);
+    border-color: #ff6f91;
+    box-shadow: 0 0 20px rgba(255,111,145,0.6);
+}
+.search-container button {
+    padding: 15px 25px;
+    border: none;
+    background: #ff6f91;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 0 50px 50px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255,111,145,0.5);
+}
+.search-container button:hover {
+    background: #ff3f6c;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255,63,108,0.7);
+}
+
+.books-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+.book-card {
+    background: #1e1e1e;
+    color: #fff;
+    width: 180px;
+    border-radius: 15px;
+    border: 2px solid #667eea;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(102,126,234,0.3);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUpCard 0.5s forwards;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.book-card::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(120deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.2) 100%);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    pointer-events: none;
+    opacity: 0;
+}
+.book-card:hover::before {
+    animation: shine 1s linear infinite;
+    opacity: 1;
+}
+
+@keyframes shine {
+    0% { transform: rotate(45deg) translate(-200%, -200%); }
+    100% { transform: rotate(45deg) translate(200%, 200%); }
+}
+
+.book-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 0 40px #ff6f91, 0 0 25px #764ba2;
+    border-color: #ff6f91;
+}
+
+.book-card img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    background: #333;
+    border-bottom: 2px solid #667eea;
+    transition: all 0.4s ease;
+}
+.book-card img:hover {
+    transform: scale(1.05) rotate(1deg);
+    box-shadow: 0 0 15px #ff6f91;
+}
+.book-card .book-info {
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.book-card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+    min-height: 38px;
+}
+.book-card button {
+    padding: 8px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.book-card button:hover {
+    background: #764ba2;
+    transform: scale(1.05);
+}
+
+.modal {
+    position: fixed;
+    top: 0; left: 0; right:0; bottom:0;
+    background: rgba(0,0,0,0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    overflow-y: auto;
+}
+.modal-content {
+    background: #1e1e1e;
+    color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    width: 95%;
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+.modal.show .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+.book-detail-card {
+    background: #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #ff6f91;
+    box-shadow: 0 0 15px #ff6f91, 0 0 10px #764ba2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUpDetail 0.5s forwards;
+    position: relative;
+}
+
+.book-detail-card::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(120deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.2) 100%);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    pointer-events: none;
+    opacity: 0;
+}
+.book-detail-card:hover::before {
+    animation: shine 1s linear infinite;
+    opacity: 1;
+}
+
+.book-detail-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border-bottom: 2px solid #667eea;
+}
+.book-detail-card h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+    text-align: center;
+}
+.book-detail-card p {
+    font-size: 14px;
+    margin-bottom: 4px;
+    text-align: center;
+}
+.close-btn {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    font-size: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    z-index: 11;
+}
+
+@keyframes fadeInDown {0%{opacity:0;transform:translateY(-20px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes fadeInUp {0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes fadeInUpCard {0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes fadeInUpDetail {0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes gradientBG {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
