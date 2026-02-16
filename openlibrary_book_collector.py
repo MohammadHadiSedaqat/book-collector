@@ -9,7 +9,7 @@ import requests
 LIBRARY_URL = "https://openlibrary.org/search.json?q=python&limit=58"
 
 
-def filter_book_func(books_info):
+def filter_book_func(books_info: list) -> list:
     """Return books published after 2000."""
 
     books_over_2000 = [
@@ -20,7 +20,7 @@ def filter_book_func(books_info):
     return books_over_2000
 
 
-def requested_books_items_func(books_over_2000):
+def requested_books_items_func(books_over_2000: list) -> list:
     """Extract selected fields from filtered books."""
 
     requested_books = []
@@ -38,7 +38,7 @@ def requested_books_items_func(books_over_2000):
     return requested_books
 
 
-def save_into_csv_func(requested_books):
+def save_into_csv_func(requested_books: list) -> None:
     """Save book data into a CSV file."""
 
     with open("books_file.csv", "w", newline="", encoding="utf-8") as csvfile:
